@@ -44,6 +44,20 @@ void read_and_map_files_to_array_skip_vector(GenomeFile *_genome,
 								 unsigned int **_B_ends,
 								 unsigned int *B_size);
 
+void fill_offsets(GenomeFile *_genome,
+								 map<string,CHRPOS> *_offsets);
+
+void read_and_map_Afiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
+								 BedFile *_bedA,
+								 struct interval **_A,
+								 unsigned int *A_size);
+
+void read_and_map_multiple_Bfiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
+								 vector<BedFile*> _bedBs,
+								 unsigned int **_B_starts,
+								 unsigned int **_B_ends,
+								 unsigned int *B_size);
+
 void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile *_genome,
 								 map<string,CHRPOS> *_offsets,
 								 BedFile *_bedA,
@@ -52,6 +66,16 @@ void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile *_genome,
 								 unsigned int *A_size,
 								 struct interval **_B,
 								 unsigned int *B_size);
+
+void combine_startend_arrays(unsigned int **_B_starts,
+							 unsigned int **_B_ends,
+							 unsigned int  *B_size,
+							 unsigned int **_B_base_starts,
+							 unsigned int **_B_base_ends,
+							 unsigned int  *B_curr_ptr,
+							 unsigned int  B_base_size);
+
+unsigned int read_total_B_file_size(vector<BedFile*> _bedBs);
 
 #if 1
 void rand_human_chr(char *c, unsigned int *c_id);

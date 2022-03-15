@@ -29,7 +29,7 @@ class BitsCount {
 
 public:
     // constructor
-    BitsCount(string bedAFile, string bedBFile, string genomeFile);
+    BitsCount(string bedAFile, vector<string> bedBFiles, string genomeFile);
     // destructor
     ~BitsCount(void);
 
@@ -39,11 +39,13 @@ private:
     // private attributes
     //------------------------------------------------
     string _bedAFile;
-    string _bedBFile;
+    vector<string> _bedBFiles;
     string _genomeFile;
 
     // instance of a bed file class.
-    BedFile *_bedA, *_bedB;
+    int _bedA_count, _bedB_count;
+    BedFile *_bedA;
+    vector<BedFile*> _bedBs;
     GenomeFile *_genome;
     
     map<string,CHRPOS> _offsets;

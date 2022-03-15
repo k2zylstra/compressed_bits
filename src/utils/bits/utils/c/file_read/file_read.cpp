@@ -162,6 +162,38 @@ void read_and_map_files_to_array_skip_vector(GenomeFile *_genome,
 										  _offsets );
 }
 //}}}
+void fill_offsets(GenomeFile *_genome, map<string,CHRPOS> *_offsets)
+{
+	vector<string> chromList = _genome->getChromList();
+	CHRPOS curr_offset = 0;
+	for (size_t c = 0; c < chromList.size(); ++c) {
+		string currChrom = chromList[c];
+		CHRPOS currChromSize = _genome->getChromSize(currChrom);
+		(*_offsets)[currChrom] = curr_offset;
+		curr_offset  += currChromSize;
+	}
+}
+
+void read_and_map_Afiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
+								 BedFile *_bedA,
+								 struct interval **_A,
+								 unsigned int *A_size)
+{
+ 	_bedA->loadBedFileIntoIntervalArray(_A, A_size, _offsets);
+}
+
+
+void read_and_map_Bfiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
+								 BedFile *_bedB,
+								 unsigned int **_B_starts,
+								 unsigned int **_B_ends,
+								 unsigned int *B_size)
+{
+	_bedB->loadBedFileIntoStartEndArrays(_B_starts,
+										 _B_ends,
+										 B_size ,
+										 _offsets );
+}
 
 //{{{ void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile
 void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile *_genome,
@@ -186,6 +218,30 @@ void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile *_genome,
 	_bedB->loadBedFileIntoIntervalArray(_B, B_size , _offsets );
 }
 //}}}
+
+void combine_startend_arrays(unsigned int **_B_starts,
+								 unsigned int **_B_ends,
+								 unsigned int *B_size,
+								 unsigned int **_B_base_starts,
+								 unsigned int **_B_base_ends,
+								 unsigned int *B_curr_ptr,
+								 unsigned int  B_base_size)
+{
+
+	for (int i = 0; i < *B_size; i++) {
+		*_B_base_starts[*B_curr_ptr] = *_B_starts[i];
+		(*B_curr_ptr)++;
+	}
+}
+
+unsigned int read_total_B_file_size(vector<BedFile*> _bedBs) {
+	unsigned int total = 0;
+	for (int i = 0; i < _bedBs.size(); i++) {
+		total += _bedBs[i]->countLines();
+	}
+
+	return total;
+}
 
 //{{{ Random generation only works for hg19
 #define min_v(a,b) \

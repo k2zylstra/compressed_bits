@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 
     // input files
     string bedAFile;
-    string bedBFile;
+    vector<string> bedBFiles;
     string genomeFile;
 
     bool haveBedA = false;
@@ -70,15 +70,20 @@ int main(int argc, char* argv[]) {
         if(PARAMETER_CHECK("-a", 2, parameterLength)) {
             if ((i+1) < argc) {
                 haveBedA = true;
-                bedAFile = argv[i + 1];
+		        bedAFile = argv[i + 1];
                 i++;
             }
         }
         else if(PARAMETER_CHECK("-b", 2, parameterLength)) {
-            if ((i+1) < argc) {
-                haveBedB = true;
-                bedBFile = argv[i + 1];
-                i++;
+            while (true) {
+                if ((i+1) < argc && argv[i + 1][0] != '-') {
+                    haveBedB = true;
+                    bedBFiles.push_back(argv[i + 1]);
+                    i++;
+                }
+                else {
+                    break;
+                }
             }
         }
         else if(PARAMETER_CHECK("-g", 2, parameterLength)) {
@@ -102,7 +107,7 @@ int main(int argc, char* argv[]) {
 
     if (!showHelp) {
 
-        BitsCount *bc = new BitsCount(bedAFile, bedBFile, genomeFile);
+        BitsCount *bc = new BitsCount(bedAFile, bedBFiles, genomeFile);
         delete bc;
         return 0;
     }
