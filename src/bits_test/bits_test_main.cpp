@@ -127,7 +127,7 @@ void ShowHelp(void) {
 
     cerr << endl << "Program: " << PROGRAM_NAME << " (v" << VERSION << ")" << endl;
 
-    cerr << "Author: Aaron Quinlan (aaronquinlan@gmail.com)" << endl;
+    cerr << "Author: Kieran Zylstra (kieran.zylstra@colorado.edu)" << endl;
 
     cerr << "Summary: Report overlaps between two feature files." << endl << endl;
 
@@ -136,7 +136,7 @@ void ShowHelp(void) {
     cerr << "Options: " << endl;
 
     cerr << "\t-a\t" << "The A input file." << endl << endl;
-    cerr << "\t-b\t" << "The B input file." << endl << endl;
+    cerr << "\t-b\t" << "The B input files seperated by spaces." << endl << endl;
     cerr << "\t-n\t" << "The number of iterations." << endl << endl;
     cerr << "\t-g\t" << "The genome/universe input file." << endl << endl;
 

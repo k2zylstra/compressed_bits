@@ -53,11 +53,10 @@ void read_and_map_Afiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
 								 unsigned int *A_size);
 
 void read_and_map_multiple_Bfiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
-								 vector<BedFile*> _bedBs,
+								 BedFile* _bedB,
 								 unsigned int **_B_starts,
 								 unsigned int **_B_ends,
 								 unsigned int *B_size);
-
 void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile *_genome,
 								 map<string,CHRPOS> *_offsets,
 								 BedFile *_bedA,

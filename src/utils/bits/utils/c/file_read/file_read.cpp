@@ -181,9 +181,8 @@ void read_and_map_Afiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
 {
  	_bedA->loadBedFileIntoIntervalArray(_A, A_size, _offsets);
 }
-
-
-void read_and_map_Bfiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
+// test
+void read_and_map_multiple_Bfiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
 								 BedFile *_bedB,
 								 unsigned int **_B_starts,
 								 unsigned int **_B_ends,
@@ -195,7 +194,6 @@ void read_and_map_Bfiles_to_array_skip_vector(map<string,CHRPOS> *_offsets,
 										 _offsets );
 }
 
-//{{{ void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile
 void read_and_map_files_to_interval_arrays_skip_vector(GenomeFile *_genome,
 								 map<string,CHRPOS> *_offsets,
 								 BedFile *_bedA,
@@ -228,7 +226,7 @@ void combine_startend_arrays(unsigned int **_B_starts,
 								 unsigned int  B_base_size)
 {
 
-	for (int i = 0; i < *B_size; i++) {
+	for (size_t i = 0; i < *B_size; i++) {
 		*_B_base_starts[*B_curr_ptr] = *_B_starts[i];
 		(*B_curr_ptr)++;
 	}
@@ -236,7 +234,7 @@ void combine_startend_arrays(unsigned int **_B_starts,
 
 unsigned int read_total_B_file_size(vector<BedFile*> _bedBs) {
 	unsigned int total = 0;
-	for (int i = 0; i < _bedBs.size(); i++) {
+	for (size_t i = 0; i < _bedBs.size(); i++) {
 		total += _bedBs[i]->countLines();
 	}
 

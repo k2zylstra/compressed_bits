@@ -15,6 +15,7 @@ UTIL_SUBDIRS =	$(SRC_DIR)/utils/lineFileUtilities \
 		$(SRC_DIR)/utils/fileType \
 		$(SRC_DIR)/utils/bits/utils/c/mt \
 		$(SRC_DIR)/utils/bits/utils/c/timer \
+		$(SRC_DIR)/utils/bits/utils/c/file_read \
 		$(SRC_DIR)/utils/bits/binary_search/lib/seq \
 		$(SRC_DIR)/utils/bits/interval_intersection/lib/seq
 

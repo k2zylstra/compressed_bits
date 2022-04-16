@@ -62,10 +62,9 @@ void BitsCount::CountOverlaps() {
 						_bedA,
 						&A,
 						&A_size);
-	
 	for (int i = 0; i < _bedB_count; i++) {
 		read_and_map_multiple_Bfiles_to_array_skip_vector(&_offsets,
-						_bedBs,
+						_bedBs[i],
 						&B_starts,
 						&B_ends,
 						&B_size);
