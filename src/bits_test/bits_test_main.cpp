@@ -41,7 +41,7 @@ int main(int argc, char* argv[]) {
 
     // input files
     string bedAFile;
-    string bedBFile;
+    vector<string> bedBFiles;
     string genomeFile;
 
 	unsigned int N;
@@ -66,7 +66,8 @@ int main(int argc, char* argv[]) {
     if(showHelp) ShowHelp();
 
     // do some parsing (all of these parameters require 2 strings)
-    for(int i = 1; i < argc; i++) {
+    int i;
+    for(i = 1; i < argc; i++) {
 
         int parameterLength = (int)strlen(argv[i]);
 
@@ -80,8 +81,15 @@ int main(int argc, char* argv[]) {
         else if(PARAMETER_CHECK("-b", 2, parameterLength)) {
             if ((i+1) < argc) {
                 haveBedB = true;
-                bedBFile = argv[i + 1];
-                i++;
+                int j = 0;
+                for (j = i+1; j < argc; j++) {
+                    if (argv[j][0] != '-') {
+                        bedBFiles.push_back(argv[j]);
+                    } else {
+                        break;
+                    }
+                }
+                i = j-1;
             }
         }
         else if(PARAMETER_CHECK("-g", 2, parameterLength)) {
@@ -114,8 +122,13 @@ int main(int argc, char* argv[]) {
 
     if (!showHelp) {
 
-        BitsTest *bc = new BitsTest(bedAFile, bedBFile, genomeFile, N);
-        delete bc;
+        for (size_t i = 0; i < bedBFiles.size(); i++) {
+            cout << endl;
+            cout << bedAFile << "|||| against ||||" << bedBFiles[i] << endl;
+            BitsTest *bc = new BitsTest(bedAFile, bedBFiles[i], genomeFile, N);
+            cout << endl;
+            delete bc;
+        }
         return 0;
     }
     else {

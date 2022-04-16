@@ -750,7 +750,7 @@ void one_side_simple_permute(unsigned int mask,
 							 unsigned int *B_lens,
 							 unsigned int size_B)
 {
-	int i;
+	unsigned int i;
 
 	for (i = 0; i < size_B; i++) 
 		B_starts[i] = get_rand(max_offset, mask);

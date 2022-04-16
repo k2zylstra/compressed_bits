@@ -1,0 +1,4 @@
+break main
+break bits_test_main.cpp:70
+
+set exec-wrapper The wrapper for running programs is \
