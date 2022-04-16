@@ -12,9 +12,8 @@
             "args": [
                 "-a",
                 "test/data/HSMM_Skeletal_Muscle_Myoblasts_Enhancers.bed",
-                "-b",
-                "test/data/HSMM_Skeletal_Muscle_Myoblasts_Genic_enhancers.bed",
-                "test/data/HSMM_Skeletal_Muscle_Myoblasts_Heterochromatin.bed",
+                "-t",
+                "test/data/Bfiles.txt",
                 "-n",
                 "200",
                 "-g",

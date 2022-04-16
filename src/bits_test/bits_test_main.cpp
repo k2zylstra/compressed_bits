@@ -33,6 +33,7 @@ using namespace std;
 
 // function declarations
 void ShowHelp(void);
+void readInBFiles(char * filename, vector<string> * bedBFiles);
 
 int main(int argc, char* argv[]) {
 
@@ -90,6 +91,13 @@ int main(int argc, char* argv[]) {
                     }
                 }
                 i = j-1;
+            }
+        }
+        else if(PARAMETER_CHECK("-t", 2, parameterLength)) {
+            if ((i+1) < argc) {
+                haveBedB = true;
+                readInBFiles(argv[i+1], &bedBFiles);
+                i++;
             }
         }
         else if(PARAMETER_CHECK("-g", 2, parameterLength)) {
@@ -150,6 +158,7 @@ void ShowHelp(void) {
 
     cerr << "\t-a\t" << "The A input file." << endl << endl;
     cerr << "\t-b\t" << "The B input files seperated by spaces." << endl << endl;
+    cerr << "\t-t\t" << "(Optional) Text file containing multiple B Files" << endl << endl;
     cerr << "\t-n\t" << "The number of iterations." << endl << endl;
     cerr << "\t-g\t" << "The genome/universe input file." << endl << endl;
 
@@ -158,3 +167,14 @@ void ShowHelp(void) {
 
 }
 
+void readInBFiles(char * filename, vector<string> * bedBFiles) {
+    fstream f;
+    f.open(filename, ios::in);
+    if (f.is_open()) {
+        string l;
+        while(getline(f, l)) {
+            bedBFiles->push_back(l);
+            l = "";
+        }
+    } 
+}
