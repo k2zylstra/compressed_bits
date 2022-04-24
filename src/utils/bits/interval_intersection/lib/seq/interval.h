@@ -89,6 +89,7 @@ unsigned int count_seq(struct interval *A,
 					   unsigned int *B_ends,
 					   unsigned int size_B);
 
+
 void test_intersections_bsearch_seq(struct interval *A,
 									unsigned int size_A,
 									struct interval *B,

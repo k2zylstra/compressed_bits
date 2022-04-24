@@ -1,4 +1,4 @@
-UTILITIES_DIR = ../utils/
+UTILITIES_DIR = ../../src/utils/
 OBJ_DIR = ../../obj/
 BIN_DIR = ../../bin/
 
@@ -18,9 +18,7 @@ INCLUDES = -I$(UTILITIES_DIR)/bedFile/ \
 # ----------------------------------
 # define our source and object files
 # ----------------------------------
-SOURCES= bits_test_main.cpp \
-	 bits_test.cpp \
-	 test_deltas.cpp
+SOURCES= test_deltas.cpp
 OBJECTS= $(SOURCES:.cpp=.o)
 _EXT_OBJECTS=bedFile.o \
 	     lineFileUtilities.o \
@@ -34,13 +32,15 @@ _EXT_OBJECTS=bedFile.o \
 	     genomeFile.o
 EXT_OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(_EXT_OBJECTS))
 BUILT_OBJECTS= $(patsubst %,$(OBJ_DIR)/%,$(OBJECTS))
-PROGRAM= bits_test
+PROGRAM= test_delta 
+
 
 all: $(PROGRAM)
 
 .PHONY: all
 
 $(PROGRAM): $(BUILT_OBJECTS) $(EXT_OBJECTS)
+	@echo $(SOURCES)
 	@echo " * linking $(PROGRAM)"
 	$(CXX) $(LDFLAGS) $(CXXFLAGS) -o $(BIN_DIR)/$@ $^ $(LIBS) \
 		$(LOCAL_LIBS) -lz -lgsl -lgslcblas -lm
@@ -49,6 +49,7 @@ $(BUILT_OBJECTS): $(SOURCES)
 	@echo " * compiling" $(*F).cpp
 	@$(CXX) -g -c -o $@ $(*F).cpp $(LDFLAGS) $(CXXFLAGS) $(INCLUDES) \
 		$(LOCAL_INCLUDES)
+	@echo "----------------------"
 
 $(EXT_OBJECTS):
 	@$(MAKE) --no-print-directory -C $(UTILITIES_DIR)/lineFileUtilities/

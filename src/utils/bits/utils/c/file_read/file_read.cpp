@@ -21,6 +21,7 @@ Licenced under the GNU General Public License 2.0 license.
 #include <vector>
 #include <string>
 
+#define TODO
 
 //{{{ void read_and_map_files(GenomeFile *_genome,
 void read_and_map_files(GenomeFile *_genome,

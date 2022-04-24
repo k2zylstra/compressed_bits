@@ -48,9 +48,6 @@ BitsTest::~BitsTest(void) {
 }
 
 
-
-
-
 void BitsTest::TestOverlaps() 
 {
     struct interval *A, *B;

@@ -1,12 +1,14 @@
 export OBJ_DIR	= obj
 export BIN_DIR	= bin
 export SRC_DIR	= src
+export TEST_DIR = test/unit
 export CXX		= g++
 export CXXFLAGS = -Wall -O2 -fPIC
 export LIBS		= -lz
 
 SUBDIRS = $(SRC_DIR)/bits_count \
           $(SRC_DIR)/bits_test \
+		  $(TEST_DIR)
 
 UTIL_SUBDIRS =	$(SRC_DIR)/utils/lineFileUtilities \
 		$(SRC_DIR)/utils/bedFile \
