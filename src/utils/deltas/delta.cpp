@@ -1,5 +1,4 @@
 #include "delta.h"
-#include "varint.h"
 #include <vector>
 
 #include <immintrin.h>
@@ -159,6 +158,58 @@ int Delta::compress_s4fastpfor()
     metadata_arr_size = 2 + ceil((log2(ex_c)/8)) + ex_c;
     Delta::meta_delta_starts = malloc(metadata_arr_size);
 
+
+    // Begin filling data
+    s4_fastpfor(Delta::meta_delta_starts);
+}
+
+// private
+int Delta::s4_fastpfor(int * meta_arr, int * comp_arr, int * excep_arr, int mc, int cc, int ec, int bprim)
+{
+    int c, space_avail, r = REGISTER_SIZE;
+    int tmp;
+    int * delta; // TODO make sure these are reassigned to the correct memory pointer
+    int delta_c;
+    int comp_arr_i = 0; // compact array index
+    int mask = 0xFFFFFFFF;
+    int bits_left;
+
+    int sub_number_index = 0;
+    int sub_mask = 0;
+
+    // TODO this is a mess rn, need to run an example through line by line and fix it
+    for (int i = 0; i < delta_c;) {
+        if (r < bprim) {
+            tmp = delta[i];
+            tmp <<= (REGISTER_SIZE - bprim - c)
+            if (sub_number_index != 0) {
+                // need to make tmp smaller because some of it has already been stored
+                sub_mask = (2**(bprim-sub_number_index+1))-1;
+                tmp &= sub_mask;
+            }
+
+            // This line zeros out the comp arr that is going to get a new number in it
+            comp_arr[comp_arr_i] = comp_arr[comp_arr_i] & (mask << (REGISTER_SIZE-c));
+            comp_arr[comp_arr_i] = comp_arr[comp_arr_i] | tmp;
+                
+            if (REGISTER_SIZE - bprim -c <= bprim) {
+                // full number was written
+                ++comp_arr_i;
+            }
+            c = bprim - r;
+            if (r > bprim) {
+                sub_number_index = 0;
+            } else {
+                // This I think is wrong
+                sub_number_index = r;
+            }
+
+            // TODO I think this is also wrong
+            if (bprim - sub_number_index >= r) {
+                ++delta_c;
+            }
+        }
+    }
 }
 
 int Delta::find_match(int * A)

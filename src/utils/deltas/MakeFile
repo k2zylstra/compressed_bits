@@ -15,7 +15,7 @@ INCLUDES = -I$(UTILITIES_DIR)/lineFileUtilities/ \
 # ----------------------------------
 # define our source and object files
 # ----------------------------------
-SOURCES= bedFile.cpp
+SOURCES= delta.cpp
 OBJECTS= $(SOURCES:.cpp=.o)
 _EXT_OBJECTS=lineFileUtilities.o gzstream.o fileType.o varint.o
 EXT_OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(_EXT_OBJECTS))

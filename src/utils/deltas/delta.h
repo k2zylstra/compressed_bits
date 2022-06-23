@@ -1,6 +1,8 @@
 #ifndef delta
 #define delta
 
+#include "varint.h"
+
 #include <vector>
 
 using namespace std;
