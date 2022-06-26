@@ -38,7 +38,7 @@ public:
     Delta();
     Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount);
 
-    int compute_deltas_d2(unsigned int * Bstarts, unsigned int * Bends, unsigned int B_length);
+    int compute_deltas_d4(unsigned int * Bstarts, unsigned int * Bends, unsigned int B_length);
     int compress_varint();
     int compress_s4fastpfor();
     int find_match(int * A);
