@@ -19,8 +19,7 @@ INCLUDES = -I$(UTILITIES_DIR)/bedFile/ \
 # define our source and object files
 # ----------------------------------
 SOURCES= bits_test_main.cpp \
-	 bits_test.cpp \
-	 test_deltas.cpp
+	 bits_test.cpp 
 OBJECTS= $(SOURCES:.cpp=.o)
 _EXT_OBJECTS=bedFile.o \
 	     lineFileUtilities.o \

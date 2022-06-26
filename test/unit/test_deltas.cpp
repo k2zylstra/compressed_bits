@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include "file_read.h"
+#include "delta.h"
 
 using namespace std;
 
@@ -10,8 +11,26 @@ bool compareInterval(struct interval i1, struct interval i2) {
     return (i1.start < i2.start);
 }
 
+int test_deltas() {
+    unsigned int Bstarts[] = {1,2,4,7,15, 18, 20, 30};
+    unsigned int Bends[] = {3,5,7,14,17, 22, 50, 100};
+    int Bc = 5;
+    Delta * D = new Delta(Bstarts, Bends, Bc);
+
+    for (int i = 0; i < 4; i++) {
+        cout << D->delta_starts[i] << endl;
+    }
+    cout << "completed delta test" << endl;
+
+    return 0;
+}
+
 int main(int argc, char ** argv) {
 
+    cout << "MADE IT =======================" << endl;
+    test_deltas();
+
+/*
     string bedAfile = (string) argv[1];
     fstream bedBfileList;
     bedBfileList.open(argv[2], ios::in);
@@ -113,6 +132,7 @@ int main(int argc, char ** argv) {
     cout << endl << endl;
     cout << "Overall Average Delta:\t" << overall_avg_diff_delt << endl;
     cout << "Overall Average Number:\t" << overall_avg_diff << endl;
+*/
     return 0;
 }
 

@@ -2,8 +2,12 @@
 #define delta
 
 #include "varint.h"
+#include <cmath>
 
 #include <vector>
+#include <immintrin.h>
+
+#define REGISTER_SIZE 32
 
 using namespace std;
 
@@ -31,9 +35,10 @@ public:
     
     vector<int> initial_vals;
     
+    Delta();
     Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount);
 
-    int compute_deltas_d2(int * Bstarts, int * Bends, int Blength);
+    int compute_deltas_d2(unsigned int * Bstarts, unsigned int * Bends, unsigned int B_length);
     int compress_varint();
     int compress_s4fastpfor();
     int find_match(int * A);
@@ -43,7 +48,7 @@ private:
     unsigned int bprim_starts;
     unsigned int bprim_ends;
     
-    int determine_bprime();
+    int determine_bprimes();
 };
 
 #endif

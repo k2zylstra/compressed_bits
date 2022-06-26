@@ -3,7 +3,7 @@ export BIN_DIR	= bin
 export SRC_DIR	= src
 export TEST_DIR = test/unit
 export CXX		= g++
-export CXXFLAGS = -Wall -O2 -fPIC
+export CXXFLAGS = -Wall -O2 -g -fPIC
 export LIBS		= -lz
 
 SUBDIRS = $(SRC_DIR)/bits_count \
@@ -16,6 +16,8 @@ UTIL_SUBDIRS =	$(SRC_DIR)/utils/lineFileUtilities \
 		$(SRC_DIR)/utils/gzstream \
 		$(SRC_DIR)/utils/fileType \
 		$(SRC_DIR)/utils/bits/utils/c/mt \
+		$(SRC_DIR)/utils/varint \
+		$(SRC_DIR)/utils/delta \
 		$(SRC_DIR)/utils/bits/utils/c/timer \
 		$(SRC_DIR)/utils/bits/utils/c/file_read \
 		$(SRC_DIR)/utils/bits/binary_search/lib/seq \
@@ -35,7 +37,7 @@ all:
 	done
 
 	@for dir in $(SUBDIRS); do \
-		echo "- Building in $$dir"; \
+		echo "- Building in $$dir" SUBDIRS; \
 		$(MAKE) --no-print-directory -C $$dir; \
 		echo ""; \
 	done

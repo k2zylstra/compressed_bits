@@ -9,15 +9,15 @@ INCLUDES =
 # ----------------------------------
 # define our source and object files
 # ----------------------------------
-SOURCES= lineFileUtilities.cpp
-OBJECTS= $(SOURCES:.cpp=.o)
+SOURCES= varint.c
+OBJECTS= $(SOURCES:.c=.o)
 _EXT_OBJECTS=	
 EXT_OBJECTS=$(patsubst %,$(OBJ_DIR)/%,$(_EXT_OBJECTS))
 BUILT_OBJECTS= $(patsubst %,$(OBJ_DIR)/%,$(OBJECTS))
 
 $(BUILT_OBJECTS): $(SOURCES)
-	@echo "  * compiling" $(*F).cpp
-	@$(CXX) -c -o $@ $(*F).cpp $(LDFLAGS) $(CXXFLAGS) $(INCLUDES)
+	@echo "  * compiling" $(*F).c
+	@$(CXX) -c -o $@ $(*F).c $(LDFLAGS) $(CXXFLAGS) $(INCLUDES)
 
 $(EXT_OBJECTS):
 	@$(MAKE) --no-print-directory -C $(INCLUDES)

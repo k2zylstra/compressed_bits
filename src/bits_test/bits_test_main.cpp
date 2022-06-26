@@ -45,7 +45,7 @@ int main(int argc, char* argv[]) {
     vector<string> bedBFiles;
     string genomeFile;
 
-	unsigned int N;
+	unsigned int N = 0;
 
     bool haveBedA = false;
     bool haveBedB = false;
