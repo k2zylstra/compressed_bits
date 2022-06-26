@@ -18,7 +18,7 @@ Delta::Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount)
     Delta::delta_ends = (int*)malloc(sizeof(int)*Bcount);
     Delta::B_lens = (unsigned int*)malloc(sizeof(int)*Bcount);
     
-    Delta::compute_deltas_d2(Bstarts, Bends, Bcount);
+    Delta::compute_deltas_d4(Bstarts, Bends, Bcount);
     //Delta::determine_bprimes();
 }
 
