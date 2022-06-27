@@ -33,6 +33,10 @@ public:
     int * meta_delta_starts;
     int * meta_delta_ends;
     
+    // TODO make these private
+    unsigned int bprim_starts;
+    unsigned int bprim_ends;
+
     vector<int> initial_vals;
     
     Delta();
@@ -45,8 +49,6 @@ public:
 
 private:
     unsigned int * B_lens;
-    unsigned int bprim_starts;
-    unsigned int bprim_ends;
     
     int determine_bprimes();
 };

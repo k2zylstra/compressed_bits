@@ -1,7 +1,12 @@
 #include "delta.h"
 #include <vector>
+#include <iostream>
 
 #include <immintrin.h>
+
+using namespace std;
+
+#define BLOCK_SIZE 1
 
 
 Delta::Delta() {
@@ -19,14 +24,25 @@ Delta::Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount)
     Delta::B_lens = (unsigned int*)malloc(sizeof(int)*Bcount);
     
     Delta::compute_deltas_d4(Bstarts, Bends, Bcount);
-    //Delta::determine_bprimes();
+    Delta::determine_bprimes();
 }
+
+// TODO will need block starts array to store starting numbers
+//  Bstarts and Bends will need to be padded to be greater than 8 and divisible by 4
+//  ^ will only be space efficient if Bends and Bstarts are vectors
+
 
 // This is D4 compression
 int Delta::compute_deltas_d4(unsigned int * Bstarts, unsigned int * Bends, unsigned int B_length)
 {
     // zeros out the registers, should be redundant
     // ymmregister is a union defined in the header file
+
+    if (B_length % 4 != 0 || B_length < 8) {
+        //This method will error out if otherwise
+        return 1;
+    }
+
     ymmregister y1;
     ymmregister y2;
     ymmregister yr;
@@ -71,6 +87,7 @@ int Delta::determine_bprimes()
     int bprim_hst = 0;
     int bprim_opt = 0;
     int i;
+    int tmp_delt;
 
     int bnsizes[32];
 
@@ -79,14 +96,20 @@ int Delta::determine_bprimes()
         if(Delta::delta_starts[i] > largest) {
             largest = Delta::delta_starts[i];
         }
-        ++bnsizes[(int)ceil(log2(Delta::delta_starts[i]))];
+
+        tmp_delt = Delta::delta_starts[i];
+        if (tmp_delt < 1) {
+            ++bnsizes[0];
+        } else {
+            ++bnsizes[(int)ceil(log2(tmp_delt))];
+        }
     }
 
     largest_bits = log2(largest);
 
-    bprim_hst = 128*i+bnsizes[largest_bits-1]*(largest_bits-(largest_bits-1)+8);
+    bprim_hst = BLOCK_SIZE*i+bnsizes[largest_bits-1]*(largest_bits-(largest_bits-1)+8);
     for (i = largest_bits-2; i > 0; i--) {
-        bprim_tmp = 128*i+bnsizes[i]*(largest_bits-i+8);
+        bprim_tmp = BLOCK_SIZE*i+bnsizes[i]*(largest_bits-i+8);
         if (bprim_tmp < bprim_hst) {
             bprim_opt = i;
             break;
@@ -100,20 +123,27 @@ int Delta::determine_bprimes()
     for (i = 0; i < 32; i++) {
         bnsizes[i] = 0;
     }
+    largest = 0;
 
     // determine b prime for ends
     for (int i = 0; i < Delta::bcount; i++) {
         if(Delta::delta_ends[i] > largest) {
             largest = Delta::delta_ends[i];
         }
-        ++bnsizes[(int)ceil(log2(Delta::delta_starts[i]))];
+
+        tmp_delt = Delta::delta_ends[i];
+        if (tmp_delt < 1) {
+            ++bnsizes[0];
+        } else {
+            ++bnsizes[(int)ceil(log2(tmp_delt))];
+        }
     }
 
     largest_bits = log2(largest);
 
-    bprim_hst = 128 * i+bnsizes[largest_bits-1]*(largest_bits=(largest_bits-1)+9);
+    bprim_hst = BLOCK_SIZE* i+bnsizes[largest_bits-1]*(largest_bits-(largest_bits-1)+8);
     for (i = largest_bits-2; i> 0; i--) {
-        bprim_tmp = 128 *i + bnsizes[i]*(largest_bits-i+8);
+        bprim_tmp = BLOCK_SIZE*i + bnsizes[i]*(largest_bits-i+8);
         if (bprim_tmp < bprim_hst) {
             bprim_opt = i;
             break;
@@ -174,6 +204,7 @@ int Delta::compress_s4fastpfor()
 }
 
 // private
+// TODO will need to be uncommented, just commented out for testing purposes
 /*
 int Delta::s4_fastpfor(int * meta_arr, int * comp_arr, int * excep_arr, int mc, int cc, int ec, int bprim)
 {

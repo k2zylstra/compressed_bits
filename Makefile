@@ -3,7 +3,7 @@ export BIN_DIR	= bin
 export SRC_DIR	= src
 export TEST_DIR = test/unit
 export CXX		= g++
-export CXXFLAGS = -Wall -O2 -g -fPIC
+export CXXFLAGS = -Wall -O0 -g -fPIC
 export LIBS		= -lz
 
 SUBDIRS = $(SRC_DIR)/bits_count \

@@ -12,22 +12,30 @@ bool compareInterval(struct interval i1, struct interval i2) {
 }
 
 int test_deltas() {
-    unsigned int Bstarts[] = {1,2,4,7,15, 18, 20, 30};
-    unsigned int Bends[] = {3,5,7,14,17, 22, 50, 100};
-    int Bc = 5;
+    cout << "===== Beginning Delta Test =====" << endl;
+
+    unsigned int Bstarts[] = {1, 2, 4, 7, 15, 18, 20, 30000};
+    unsigned int Bends[] = {3, 5, 7, 14, 17, 22, 50, 70};
+    int Bc = 8;
+
+    cout << "creating Delta object:" << endl;
     Delta * D = new Delta(Bstarts, Bends, Bc);
 
+    cout << "Printing delta values:" << endl;
     for (int i = 0; i < 4; i++) {
-        cout << D->delta_starts[i] << endl;
+        cout << "Position " << i << ": " << D->delta_starts[i] << endl;
     }
-    cout << "completed delta test" << endl;
+    cout << endl;
 
+    cout << "Bprime start: " << D->bprim_starts << endl;;
+    cout << "Bprim end: " <<  D->bprim_ends << endl;
+
+    cout << "===== Completed delta test =====" << endl;
     return 0;
 }
 
 int main(int argc, char ** argv) {
 
-    cout << "MADE IT =======================" << endl;
     test_deltas();
 
 /*
