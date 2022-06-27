@@ -9,7 +9,11 @@
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/test_delta",
-            "args": [],
+            "args": [
+                "${workspaceFolder}/test/data/HSMM_Skeletal_Muscle_Myoblasts_Bivalent_Enhancer.bed",
+                "${workspaceFolder}/test/data/Bfiles.txt",
+                "${workspaceFolder}/test/data/human.hg38.genome"
+            ],
             "stopAtEntry": false,
             "cwd": "${fileDirname}",
             "environment": [],

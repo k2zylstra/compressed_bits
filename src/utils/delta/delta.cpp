@@ -6,7 +6,7 @@
 
 using namespace std;
 
-#define BLOCK_SIZE 1
+#define BLOCK_SIZE 256
 
 
 Delta::Delta() {
@@ -23,7 +23,10 @@ Delta::Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount)
     Delta::delta_ends = (int*)malloc(sizeof(int)*Bcount);
     Delta::B_lens = (unsigned int*)malloc(sizeof(int)*Bcount);
     
-    Delta::compute_deltas_d4(Bstarts, Bends, Bcount);
+    int compute = Delta::compute_deltas_d4(Bstarts, Bends, Bcount);
+    if (compute != 0) {
+        return;
+    }
     Delta::determine_bprimes();
 }
 
@@ -107,7 +110,7 @@ int Delta::determine_bprimes()
 
     largest_bits = log2(largest);
 
-    bprim_hst = BLOCK_SIZE*i+bnsizes[largest_bits-1]*(largest_bits-(largest_bits-1)+8);
+    bprim_hst = BLOCK_SIZE * i + bnsizes[largest_bits-1] * (largest_bits-(largest_bits-1)+8);
     for (i = largest_bits-2; i > 0; i--) {
         bprim_tmp = BLOCK_SIZE*i+bnsizes[i]*(largest_bits-i+8);
         if (bprim_tmp < bprim_hst) {

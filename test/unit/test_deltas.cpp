@@ -11,12 +11,82 @@ bool compareInterval(struct interval i1, struct interval i2) {
     return (i1.start < i2.start);
 }
 
-int test_deltas() {
+int get_combo_B_file(char ** argv, vector<struct interval> * combinationB) {
+
+    string bedAfile = (string) argv[1];
+    fstream bedBfileList;
+
+    bedBfileList.open(argv[2], ios::in);
+
+    vector<string> bedBfiles;
+    string l;
+    if (bedBfileList.is_open()) {
+        while (getline(bedBfileList, l)) {
+            bedBfiles.push_back(l);
+            l = "";
+        }
+    }
+
+
+    struct interval *A, *B;
+    string genome_file = argv[3];
+    GenomeFile * genome = new GenomeFile(genome_file);
+    map<string,CHRPOS> offsets;
+    BedFile * bedA = new BedFile(bedAfile);
+    unsigned int A_size, B_size;
+    BedFile * bedB;
+
+    float overall_diff_total = 0;
+    float overall_diff_delt_total = 0;
+    float n_total = 0;
+    for (int i = 0; i < bedBfiles.size(); i++) {
+
+        bedB = new BedFile(bedBfiles[i]);
+
+	    read_and_map_files_to_interval_arrays_skip_vector(genome, 
+                                                      &offsets,
+                                                      bedA,
+                                                      bedB,
+                                                      &A,
+                                                      &A_size,
+                                                      &B,
+                                                      &B_size);
+
+        for (int j = 0; j < B_size; j++) {
+
+            combinationB->push_back(B[j]);
+
+        }
+    }
+    
+    return 0;
+}
+
+int test_deltas(vector<struct interval> * combinationB) {
+    
+    unsigned int Bc = combinationB->size();
+    int remainder = Bc % 4;
+    if (remainder != 0) {
+        Bc += remainder;
+    }
+    unsigned int * Bstarts = (unsigned int *)malloc(combinationB->size() * sizeof(int));
+    unsigned int * Bends = (unsigned int *)malloc(combinationB->size() * sizeof(int));
+    
+    for (int i = 0; i < combinationB->size(); i++) {
+        Bstarts[i] = (*combinationB)[i].start;
+        Bends[i] = (*combinationB)[i].end;
+    }
+    for (int i = 0; i < remainder; i++) {
+        Bstarts[Bc-i] = 0;
+        Bends[Bc-i] = 0;
+    }
+
+
+
     cout << "===== Beginning Delta Test =====" << endl;
 
-    unsigned int Bstarts[] = {1, 2, 4, 7, 15, 18, 20, 30000};
-    unsigned int Bends[] = {3, 5, 7, 14, 17, 22, 50, 70};
-    int Bc = 8;
+    
+    
 
     cout << "creating Delta object:" << endl;
     Delta * D = new Delta(Bstarts, Bends, Bc);
@@ -36,11 +106,12 @@ int test_deltas() {
 
 int main(int argc, char ** argv) {
 
-    test_deltas();
+    vector<struct interval> combinationB;
 
-/*
-    string bedAfile = (string) argv[1];
-    fstream bedBfileList;
+    get_combo_B_file(argv, &combinationB);
+    test_deltas(&combinationB);
+
+/*I
     bedBfileList.open(argv[2], ios::in);
 
     vector<string> bedBfiles;
