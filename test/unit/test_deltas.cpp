@@ -64,11 +64,16 @@ int get_combo_B_file(char ** argv, vector<struct interval> * combinationB) {
 
 int test_deltas(vector<struct interval> * combinationB) {
     
-    unsigned int Bc = combinationB->size();
-    int remainder = Bc % 4;
-    if (remainder != 0) {
-        Bc += remainder;
+    int remainder = combinationB->size() % 4;
+    for (int i = 0; i < remainder; i++) {
+        struct interval * si = new struct interval;
+        si->start = 0;
+        si->end = 0;
+        si->order = 0;
+        combinationB->push_back(*si);
     }
+
+    unsigned int Bc = combinationB->size();
     unsigned int * Bstarts = (unsigned int *)malloc(combinationB->size() * sizeof(int));
     unsigned int * Bends = (unsigned int *)malloc(combinationB->size() * sizeof(int));
     
@@ -76,31 +81,37 @@ int test_deltas(vector<struct interval> * combinationB) {
         Bstarts[i] = (*combinationB)[i].start;
         Bends[i] = (*combinationB)[i].end;
     }
-    for (int i = 0; i < remainder; i++) {
-        Bstarts[Bc-i] = 0;
-        Bends[Bc-i] = 0;
+
+    std::sort(Bstarts, Bstarts+Bc);
+    std::sort(Bends, Bends+Bc);
+
+    for (int i = 0; i < Bc -1; i++) {
+        if (Bstarts[i] > Bstarts[i+1] || Bends[i] > Bends[i+1]) {
+            std::cout << "B not sorted" << endl;
+            std::cout << "i: " << i << endl;
+            return 0;
+        }
     }
 
 
-
-    cout << "===== Beginning Delta Test =====" << endl;
+    std::cout << "===== Beginning Delta Test =====" << endl;
 
     
     
 
-    cout << "creating Delta object:" << endl;
+    std::cout << "creating Delta object:" << endl;
     Delta * D = new Delta(Bstarts, Bends, Bc);
 
-    cout << "Printing delta values:" << endl;
+    std::cout << "Printing delta values:" << endl;
     for (int i = 0; i < 4; i++) {
-        cout << "Position " << i << ": " << D->delta_starts[i] << endl;
+        std::cout << "Position " << i << ": " << D->delta_starts[i] << endl;
     }
-    cout << endl;
+    std::cout << endl;
 
-    cout << "Bprime start: " << D->bprim_starts << endl;;
-    cout << "Bprim end: " <<  D->bprim_ends << endl;
+    std::cout << "Bprime start: " << D->bprim_starts << endl;;
+    std::cout << "Bprim end: " <<  D->bprim_ends << endl;
 
-    cout << "===== Completed delta test =====" << endl;
+    std::cout << "===== Completed delta test =====" << endl;
     return 0;
 }
 

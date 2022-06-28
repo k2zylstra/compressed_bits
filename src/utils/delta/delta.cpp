@@ -9,6 +9,7 @@ using namespace std;
 #define BLOCK_SIZE 256
 
 
+// TODO put in destructor that frees memory
 Delta::Delta() {
 }
 
@@ -18,12 +19,14 @@ Delta::Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount)
     Delta::B_ends = Bends;
     Delta::bcount = Bcount;
 
-
+    Delta::delta_starts = (int*)Bstarts;
+    Delta::delta_ends = (int*)Bends;
     Delta::delta_starts = (int*)malloc(sizeof(int)*Bcount);
     Delta::delta_ends = (int*)malloc(sizeof(int)*Bcount);
     Delta::B_lens = (unsigned int*)malloc(sizeof(int)*Bcount);
     
-    int compute = Delta::compute_deltas_d4(Bstarts, Bends, Bcount);
+    int compute = Delta::compute_deltas_d1(Bstarts, Bends, Bcount);
+
     if (compute != 0) {
         return;
     }
@@ -35,7 +38,45 @@ Delta::Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount)
 //  ^ will only be space efficient if Bends and Bstarts are vectors
 
 
-// This is D4 compression
+int Delta::compute_deltas_d1(unsigned int * Bstarts, unsigned int * Bends, unsigned int B_length) {
+
+    if (B_length % 2 != 0 || B_length < 8) {
+        //This method will error out if otherwise
+        return 1;
+    }
+
+    ymmregister y1;
+    ymmregister y2;
+    ymmregister yr;
+    y1.r4 = _mm_setzero_si128();
+    y2.r4 = _mm_setzero_si128();
+    yr.r4 = _mm_setzero_si128();
+
+    for (int i = 0; i < B_length-4; i+=4) {
+        // TODO what if B_length is not deivisible by 8 and therefore tries to acces outside of this
+        // sets the ymm registers and subtracts the values to be stored in the result ymm register
+        y1.r4 = _mm_setr_epi32(Bstarts[i], Bstarts[i+1], Bstarts[i+2], Bstarts[i+3]);
+        y2.r4 = _mm_setr_epi32(Bstarts[i+2], Bstarts[i+3], Bstarts[i+4], Bstarts[i+5]);
+        yr.r4 = _mm_sub_epi32(y2.r4, y1.r4);
+        for (int j = 0; j < 4; j++) {
+            Delta::delta_starts[i+j] = yr.i4[j];
+        }
+
+        // does the same thing  as the block above just with the ends of the B intervals
+        y1.r4 = _mm_setr_epi32(Bends[i], Bends[i+1], Bends[i+2], Bends[i+3]);
+        y2.r4 = _mm_setr_epi32(Bends[i+2], Bends[i+3], Bends[i+4], Bends[i+5]);
+        yr.r4 = _mm_sub_epi32(y2.r4, y1.r4);
+        for (int j = 0; j < 4; j++) {
+            Delta::delta_ends[i+j] = yr.i4[j];
+        }
+
+    }
+    
+    return 0;
+
+    return 0;
+}
+
 int Delta::compute_deltas_d4(unsigned int * Bstarts, unsigned int * Bends, unsigned int B_length)
 {
     // zeros out the registers, should be redundant
