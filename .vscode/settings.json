@@ -1,5 +1,14 @@
 {
     "files.associations": {
-        "gzstream.C": "cpp"
-    }
+        "gzstream.C": "cpp",
+        "array": "cpp",
+        "hash_map": "cpp",
+        "string_view": "cpp",
+        "initializer_list": "cpp",
+        "valarray": "cpp"
+    },
+
+    "C_Cpp.default.browse.path": [
+        "comp_bits/*"
+    ]
 }

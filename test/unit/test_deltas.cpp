@@ -11,6 +11,7 @@ bool compareInterval(struct interval i1, struct interval i2) {
     return (i1.start < i2.start);
 }
 
+// TODO fix combo B in basic BTIS algo
 int get_combo_B_file(char ** argv, vector<struct interval> * combinationB) {
 
     string bedAfile = (string) argv[1];
@@ -64,6 +65,7 @@ int get_combo_B_file(char ** argv, vector<struct interval> * combinationB) {
 
 int test_deltas(vector<struct interval> * combinationB) {
     
+    // Pads combinationB array
     int remainder = combinationB->size() % 4;
     for (int i = 0; i < remainder; i++) {
         struct interval * si = new struct interval;
@@ -73,18 +75,22 @@ int test_deltas(vector<struct interval> * combinationB) {
         combinationB->push_back(*si);
     }
 
+    // Allocates Bstarts, Ends, and b_count for Delta class constructor`
     unsigned int Bc = combinationB->size();
     unsigned int * Bstarts = (unsigned int *)malloc(combinationB->size() * sizeof(int));
     unsigned int * Bends = (unsigned int *)malloc(combinationB->size() * sizeof(int));
     
+    // fills Bstarts and B ends
     for (int i = 0; i < combinationB->size(); i++) {
         Bstarts[i] = (*combinationB)[i].start;
         Bends[i] = (*combinationB)[i].end;
     }
 
+    // Sorts Bstarts and Bends
     std::sort(Bstarts, Bstarts+Bc);
     std::sort(Bends, Bends+Bc);
 
+    // Verifies that Bstarts and Bends are sorted
     for (int i = 0; i < Bc -1; i++) {
         if (Bstarts[i] > Bstarts[i+1] || Bends[i] > Bends[i+1]) {
             std::cout << "B not sorted" << endl;
@@ -94,24 +100,32 @@ int test_deltas(vector<struct interval> * combinationB) {
     }
 
 
-    std::cout << "===== Beginning Delta Test =====" << endl;
 
     
+    // TODO write these to files for analysis
+    int compression_schemes[] = {1, 2, 4};
+    for (int i = 0; i < 3; i++) {
+
+        std::cout << "===== Beginning Delta Test =====" << endl;
+
+
+        std::cout << "creating Delta object:" << endl;
+        Delta * D = new Delta(Bstarts, Bends, Bc, compression_schemes[i]);
     
+        std::cout << "Printing delta values:" << endl;
+        //TODO make sure b length > 30
+        for (int i = 0; i < 30; i++) {
+            std::cout << "Position " << i << ": " << D->delta_starts[i] << endl;
+        }
+        std::cout << endl;
+    
+        std::cout << "Bprime start: " << D->bprim_starts << endl;;
+        std::cout << "Bprim end: " <<  D->bprim_ends << endl;
 
-    std::cout << "creating Delta object:" << endl;
-    Delta * D = new Delta(Bstarts, Bends, Bc);
+    
+        std::cout << "===== Completed delta test =====" << endl;
 
-    std::cout << "Printing delta values:" << endl;
-    for (int i = 0; i < 4; i++) {
-        std::cout << "Position " << i << ": " << D->delta_starts[i] << endl;
     }
-    std::cout << endl;
-
-    std::cout << "Bprime start: " << D->bprim_starts << endl;;
-    std::cout << "Bprim end: " <<  D->bprim_ends << endl;
-
-    std::cout << "===== Completed delta test =====" << endl;
     return 0;
 }
 
