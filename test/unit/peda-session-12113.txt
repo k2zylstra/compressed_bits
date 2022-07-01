@@ -1,6 +1,0 @@
-break test_deltas.cpp:96
-break test_deltas.cpp:98
-break test_deltas.cpp:106
-break test_deltas.cpp:169
-
-set exec-wrapper logging enabled
