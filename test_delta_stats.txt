@@ -1,0 +1,4 @@
+===== Beginning Delta Test =====
+D1 compression:
+------------------
+Starts Summary:

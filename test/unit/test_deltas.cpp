@@ -2,10 +2,18 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cmath>
 #include "file_read.h"
 #include "delta.h"
 
 using namespace std;
+
+struct summary {
+    int min;
+    int max;
+    float avg;
+    float variance;
+};
 
 bool compareInterval(struct interval i1, struct interval i2) {
     return (i1.start < i2.start);
@@ -63,6 +71,41 @@ int get_combo_B_file(char ** argv, vector<struct interval> * combinationB) {
     return 0;
 }
 
+summary * calculate_arr_sum(int * arr, int count) {
+    summary * arr_summary = new summary;
+    arr_summary->avg = 0;
+    arr_summary->max = 0;
+    arr_summary->min = 0;
+    arr_summary->variance = 0;
+
+    // calculate average
+    float sum = 0;
+    int tmp_max = 0;
+    int tmp_min = INT32_MAX;
+    for (int i = 0; i < count; i++) {
+        sum += arr[i];
+
+        if (arr[i] > tmp_max) {
+            tmp_max = arr[i];
+        }
+        if (arr[i] < tmp_min) {
+            tmp_min = arr[i];
+        }
+    }
+
+    arr_summary->max = tmp_max;
+    arr_summary->min = tmp_min;
+    arr_summary->avg = sum / count;
+
+    float var = 0;
+    for (int i = 0; i < count; i++) {
+        var += pow(arr[i]-arr_summary->avg, 2);
+    }
+    arr_summary->variance = var / count;
+
+    return arr_summary;
+}
+
 int test_deltas(vector<struct interval> * combinationB) {
     
     // Pads combinationB array
@@ -99,31 +142,68 @@ int test_deltas(vector<struct interval> * combinationB) {
         }
     }
 
+    // calculate array summary; array must be sorted
+    summary * starts_summary = calculate_arr_sum((int*)Bstarts, Bc);
+    summary * ends_summary = calculate_arr_sum((int*)Bends, Bc);
 
 
-    
+
     // TODO write these to files for analysis
+    fstream out_file;
+    out_file.open("test_delta_stats.txt", ios::out);
+
+    out_file << "Starts Summary:" << endl;
+    out_file << "Average: " << starts_summary->avg << endl;
+    out_file << "Max: " << starts_summary->max << endl;
+    out_file << "Min: " << starts_summary->min << endl;
+    out_file << "Variance: " << starts_summary->variance << endl;
+    out_file << endl;
+    out_file << "Ends Summary:" << endl;
+    out_file << "Average: " << ends_summary->avg << endl;
+    out_file << "Max: " << ends_summary->max << endl;
+    out_file << "Min: " << ends_summary->min << endl;
+    out_file << "Variance: " << ends_summary->variance << endl;
+    out_file << endl;
+    out_file << "=================" << endl;
+
     int compression_schemes[] = {1, 2, 4};
     for (int i = 0; i < 3; i++) {
 
-        std::cout << "===== Beginning Delta Test =====" << endl;
+        std::cout << "===== Beginning Delta Test: " << "D" << compression_schemes[i] << " =====" << endl;
+        out_file << "===== Beginning Delta Test =====" << endl;
+        out_file << "D" << compression_schemes[i] << " compression:" << endl;
+        out_file << "------------------" << endl;
 
 
-        std::cout << "creating Delta object:" << endl;
         Delta * D = new Delta(Bstarts, Bends, Bc, compression_schemes[i]);
-    
-        std::cout << "Printing delta values:" << endl;
+        summary * dstarts_summary = calculate_arr_sum((int*)D->delta_starts, Bc);
+        summary * dends_summary = calculate_arr_sum((int*)D->delta_ends, Bc);
+
+        out_file << "Delta Starts Summary:" << endl;
+        out_file << "Average: " << dstarts_summary->avg << endl;
+        out_file << "Max: " << dstarts_summary->max << endl;
+        out_file << "Min: " << dstarts_summary->min << endl;
+        out_file << "Variance: " << dstarts_summary->variance << endl;
+        out_file << endl;
+        out_file << "Delta Ends Summary:" << endl;
+        out_file << "Average: " << dends_summary->avg << endl;
+        out_file << "Max: " << dends_summary->max << endl;
+        out_file << "Min: " << dends_summary->min << endl;
+        out_file << "Variance: " << dends_summary->variance << endl;
+        out_file << endl;
+       
+        out_file << "Printing delta values:" << endl;
         //TODO make sure b length > 30
         for (int i = 0; i < 30; i++) {
-            std::cout << "Position " << i << ": " << D->delta_starts[i] << endl;
+            out_file << "Position " << i << ": " << D->delta_starts[i] << endl;
         }
-        std::cout << endl;
     
-        std::cout << "Bprime start: " << D->bprim_starts << endl;;
-        std::cout << "Bprim end: " <<  D->bprim_ends << endl;
+        out_file << "Bprime start: " << D->bprim_starts << endl;;
+        out_file << "Bprim end: " <<  D->bprim_ends << endl;
 
     
         std::cout << "===== Completed delta test =====" << endl;
+        out_file << "===== Completed delta test =====" << endl << endl;
 
     }
     return 0;
