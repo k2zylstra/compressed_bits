@@ -37,7 +37,8 @@ public:
     unsigned int bprim_starts;
     unsigned int bprim_ends;
 
-    vector<int> initial_vals;
+    vector<int> initial_vals_starts;
+    vector<int> initial_vals_ends;
     
     Delta();
     // encoding values: 1, 2, 4 corresponding to d1, d2, or d4 encoding

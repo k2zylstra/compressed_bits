@@ -45,6 +45,13 @@ Delta::Delta(unsigned int * Bstarts, unsigned int * Bends, unsigned int Bcount, 
             break;
     }
 
+    // Set initial values
+    for (int i = 0; i < encoding; i++) {
+        Delta::initial_vals_starts.push_back(Bstarts[i]);
+        Delta::initial_vals_ends.push_back(Bends[i]);
+    }
+
+    // make sure that the deltas were computed
     if (compute != 0) {
         return;
     }

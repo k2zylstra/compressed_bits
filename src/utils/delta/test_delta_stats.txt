@@ -14,7 +14,6 @@ Variance: 1.93514e+18
 ===== Beginning Delta Test =====
 D1 compression:
 ------------------
-Took 0.0499014 ticks to complete
 Delta Starts Summary:
 Average: 3591.61
 Max: 119353154
@@ -65,7 +64,6 @@ Bprim end: 24
 ===== Beginning Delta Test =====
 D2 compression:
 ------------------
-Took 0.0492976 ticks to complete
 Delta Starts Summary:
 Average: 7171.52
 Max: 119354354
@@ -116,51 +114,3 @@ Bprim end: 24
 ===== Beginning Delta Test =====
 D4 compression:
 ------------------
-Took 0.0480444 ticks to complete
-Delta Starts Summary:
-Average: 14341.6
-Max: 119366154
-Min: 0
-Variance: 7.98853e+10
-
-Delta Ends Summary:
-Average: 14341.6
-Max: 119366154
-Min: 0
-Variance: 8.0035e+10
-
-Printing delta values:
-Position 0: 15001
-Position 1: 17401
-Position 2: 713200
-Position 3: 713200
-Position 4: 699800
-Position 5: 697800
-Position 6: 10800
-Position 7: 10800
-Position 8: 12200
-Position 9: 12000
-Position 10: 28000
-Position 11: 28600
-Position 12: 25600
-Position 13: 25600
-Position 14: 800
-Position 15: 800
-Position 16: 1200
-Position 17: 1400
-Position 18: 1600
-Position 19: 1200
-Position 20: 800
-Position 21: 7800
-Position 22: 7600
-Position 23: 8600
-Position 24: 8800
-Position 25: 11000
-Position 26: 11200
-Position 27: 10800
-Position 28: 10800
-Position 29: 3600
-Bprime start: 23
-Bprim end: 24
-===== Completed delta test =====
-

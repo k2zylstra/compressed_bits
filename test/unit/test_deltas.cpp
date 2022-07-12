@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <cmath>
+#include <chrono>
 #include "file_read.h"
 #include "delta.h"
 
@@ -107,6 +108,9 @@ summary * calculate_arr_sum(int * arr, int count) {
 }
 
 int test_deltas(vector<struct interval> * combinationB) {
+    chrono::high_resolution_clock::time_point start;
+    chrono::high_resolution_clock::time_point stop;
+    chrono::duration<double> time_span;
     
     // Pads combinationB array
     int remainder = combinationB->size() % 4;
@@ -174,8 +178,13 @@ int test_deltas(vector<struct interval> * combinationB) {
         out_file << "D" << compression_schemes[i] << " compression:" << endl;
         out_file << "------------------" << endl;
 
-
+        start = chrono::high_resolution_clock::now();
         Delta * D = new Delta(Bstarts, Bends, Bc, compression_schemes[i]);
+        stop = chrono::high_resolution_clock::now();
+        time_span = stop - start;
+
+        out_file << "Took " << time_span.count() << " ticks to complete" << endl;
+
         summary * dstarts_summary = calculate_arr_sum((int*)D->delta_starts, Bc);
         summary * dends_summary = calculate_arr_sum((int*)D->delta_ends, Bc);
 
