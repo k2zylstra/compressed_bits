@@ -5,7 +5,8 @@
         "hash_map": "cpp",
         "string_view": "cpp",
         "initializer_list": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "cmath": "cpp"
     },
 
     "C_Cpp.default.browse.path": [

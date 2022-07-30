@@ -1,3 +1,0 @@
-break delta.cpp:17
-
-set exec-wrapper logging enabled

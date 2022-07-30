@@ -46,10 +46,7 @@ int get_combo_B_file(char ** argv, vector<struct interval> * combinationB) {
     unsigned int A_size, B_size;
     BedFile * bedB;
 
-    float overall_diff_total = 0;
-    float overall_diff_delt_total = 0;
-    float n_total = 0;
-    for (int i = 0; i < bedBfiles.size(); i++) {
+    for (size_t i = 0; i < bedBfiles.size(); i++) {
 
         bedB = new BedFile(bedBfiles[i]);
 
@@ -62,7 +59,7 @@ int get_combo_B_file(char ** argv, vector<struct interval> * combinationB) {
                                                       &B,
                                                       &B_size);
 
-        for (int j = 0; j < B_size; j++) {
+        for (unsigned int j = 0; j < B_size; j++) {
 
             combinationB->push_back(B[j]);
 
@@ -114,12 +111,14 @@ int test_deltas(vector<struct interval> * combinationB) {
     
     // Pads combinationB array
     int remainder = combinationB->size() % 4;
+    vector<struct interval*> to_delete;
     for (int i = 0; i < remainder; i++) {
         struct interval * si = new struct interval;
         si->start = 0;
         si->end = 0;
         si->order = 0;
         combinationB->push_back(*si);
+        to_delete.push_back(si);
     }
 
     // Allocates Bstarts, Ends, and b_count for Delta class constructor`
@@ -128,7 +127,7 @@ int test_deltas(vector<struct interval> * combinationB) {
     unsigned int * Bends = (unsigned int *)malloc(combinationB->size() * sizeof(int));
     
     // fills Bstarts and B ends
-    for (int i = 0; i < combinationB->size(); i++) {
+    for (size_t i = 0; i < combinationB->size(); i++) {
         Bstarts[i] = (*combinationB)[i].start;
         Bends[i] = (*combinationB)[i].end;
     }
@@ -138,7 +137,7 @@ int test_deltas(vector<struct interval> * combinationB) {
     std::sort(Bends, Bends+Bc);
 
     // Verifies that Bstarts and Bends are sorted
-    for (int i = 0; i < Bc -1; i++) {
+    for (unsigned int i = 0; i < Bc -1; i++) {
         if (Bstarts[i] > Bstarts[i+1] || Bends[i] > Bends[i+1]) {
             std::cout << "B not sorted" << endl;
             std::cout << "i: " << i << endl;
@@ -213,7 +212,10 @@ int test_deltas(vector<struct interval> * combinationB) {
     
         std::cout << "===== Completed delta test =====" << endl;
         out_file << "===== Completed delta test =====" << endl << endl;
-
+        delete D;
+    }
+    for (size_t i = 0; i < to_delete.size(); i++) {
+        delete to_delete[i];
     }
     return 0;
 }

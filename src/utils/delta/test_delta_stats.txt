@@ -14,20 +14,21 @@ Variance: 1.93514e+18
 ===== Beginning Delta Test =====
 D1 compression:
 ------------------
+Took 5.70598 ticks to complete
 Delta Starts Summary:
-Average: 3591.61
+Average: 3591.62
 Max: 119353154
 Min: 0
 Variance: 1.98623e+10
 
 Delta Ends Summary:
-Average: 7171.52
+Average: 7171.51
 Max: 119334354
 Min: 0
 Variance: 3.98795e+10
 
 Printing delta values:
-Position 0: 0
+Position 0: 1
 Position 1: 1
 Position 2: 0
 Position 3: 15000
@@ -57,24 +58,25 @@ Position 26: 1200
 Position 27: 200
 Position 28: 9600
 Position 29: 200
-Bprime start: 23
+Bprime start: 25
 Bprim end: 24
 ===== Completed delta test =====
 
 ===== Beginning Delta Test =====
 D2 compression:
 ------------------
+Took 2.56749 ticks to complete
 Delta Starts Summary:
-Average: 7171.52
+Average: 7175.52
 Max: 119354354
 Min: 0
-Variance: 3.97257e+10
+Variance: 3.974e+10
 
 Delta Ends Summary:
-Average: 7171.52
+Average: 7175.51
 Max: 119334354
 Min: 0
-Variance: 3.98795e+10
+Variance: 3.98938e+10
 
 Printing delta values:
 Position 0: 1
@@ -107,10 +109,58 @@ Position 26: 1400
 Position 27: 9800
 Position 28: 9800
 Position 29: 1000
-Bprime start: 23
+Bprime start: 25
 Bprim end: 24
 ===== Completed delta test =====
 
 ===== Beginning Delta Test =====
 D4 compression:
 ------------------
+Took 4.31864 ticks to complete
+Delta Starts Summary:
+Average: 14345.6
+Max: 119366154
+Min: 0
+Variance: 7.98995e+10
+
+Delta Ends Summary:
+Average: 14344.8
+Max: 119366154
+Min: 0
+Variance: 8.00487e+10
+
+Printing delta values:
+Position 0: 1
+Position 1: 17401
+Position 2: 713200
+Position 3: 713200
+Position 4: 699800
+Position 5: 697800
+Position 6: 10800
+Position 7: 10800
+Position 8: 12200
+Position 9: 12000
+Position 10: 28000
+Position 11: 28600
+Position 12: 25600
+Position 13: 25600
+Position 14: 800
+Position 15: 800
+Position 16: 1200
+Position 17: 1400
+Position 18: 1600
+Position 19: 1200
+Position 20: 800
+Position 21: 7800
+Position 22: 7600
+Position 23: 8600
+Position 24: 8800
+Position 25: 11000
+Position 26: 11200
+Position 27: 10800
+Position 28: 10800
+Position 29: 3600
+Bprime start: 25
+Bprim end: 24
+===== Completed delta test =====
+
