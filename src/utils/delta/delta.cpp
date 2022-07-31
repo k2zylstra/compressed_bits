@@ -9,7 +9,6 @@ using namespace std;
 #define BLOCK_SIZE 256
 
 
-// TODO put in destructor that frees memory
 Delta::~Delta() {
     free(Delta::delta_starts);
     free(Delta::delta_ends);
