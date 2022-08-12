@@ -85,9 +85,16 @@ int Delta::compute_deltas_d1(unsigned int * Bstarts, unsigned int * Bends, unsig
     ymmregister y1;
     ymmregister y2;
     ymmregister yr;
+    ymmregister mask;
     y1.r4 = _mm_setzero_si128();
     y2.r4 = _mm_setzero_si128();
     yr.r4 = _mm_setzero_si128();
+
+    mask.i4[0] = 0xffffffff;
+    mask.i4[1] = 0xffffffff;
+    mask.i4[2] = 0xffffffff;
+    mask.i4[3] = 0xffffffff;
+
     unsigned int i;
 
     // i = 1 to store the first option
@@ -100,7 +107,6 @@ int Delta::compute_deltas_d1(unsigned int * Bstarts, unsigned int * Bends, unsig
         for (int j = 0; j < 4; j++) {
             Delta::delta_starts[i+j] = yr.i4[j];
         }
-
         // does the same thing  as the block above just with the ends of the B intervals
         y1.r4 = _mm_setr_epi32(Bends[i], Bends[i+1], Bends[i+2], Bends[i+3]);
         y2.r4 = _mm_setr_epi32(Bends[i+2], Bends[i+3], Bends[i+4], Bends[i+5]);
@@ -108,6 +114,17 @@ int Delta::compute_deltas_d1(unsigned int * Bstarts, unsigned int * Bends, unsig
         for (int j = 0; j < 4; j++) {
             Delta::delta_ends[i+j] = yr.i4[j];
         }
+/*
+        y1.r4 = _mm_maskload_epi32((const int *)Bstarts+(i), mask.r4);
+        y2.r4 = _mm_maskload_epi32((const int *)Bstarts+(i+1), mask.r4);
+        yr.r4 = _mm_sub_epi32(y2.r4, y1.r4);
+        _mm_maskstore_epi32(Delta::delta_starts+(i), mask.r4, yr.r4);
+
+        y1.r4 = _mm_maskload_epi32((const int *)Bends+(i), mask.r4);
+        y2.r4 = _mm_maskload_epi32((const int *)Bends+(i+1), mask.r4);
+        yr.r4 = _mm_sub_epi32(y2.r4, y1.r4);
+        _mm_maskstore_epi32(Delta::delta_ends+(i), mask.r4, yr.r4);
+*/
     }
     for (; i < B_length-1; i++) {
         Delta::delta_starts[i] = B_starts[i+1] - B_starts[i];
@@ -302,18 +319,25 @@ int Delta::allocate_comp_space(unsigned int * B_arr,
                                unsigned int bprim) {
 
     unsigned int i;
-    unsigned int num_bits;
+    int num_bits;
     int ex_c = 0;
     int base_arr_size;
     int metadata_arr_size;
     vector<int> exceptions;
+    int B_arr_tmp;
 
     // Instead of this could possibly store the bnsizes variable from the determin_bprime method
     //  in order to count the number of sizes for each one. Then a simple addition to find how
     //  many exceptions there are. 
     for (i = 0; i < Delta::bcount; i++) {
         //TODO shouldn't be B_arr, should be using delta_arr at this point
-        num_bits = (unsigned int)ceil(log2(B_arr[i]));
+        // so we change the B_arr[i] to a signed int
+        B_arr_tmp = B_arr[i];
+        if (B_arr[i] == 0) {
+            num_bits = 0;
+        } else {
+            num_bits = ceil(log2((int)B_arr[i]));
+        }
         if (num_bits > bprim) {
             ex_c += 1;
             exceptions.push_back(i);
@@ -323,7 +347,8 @@ int Delta::allocate_comp_space(unsigned int * B_arr,
     // allocate base array
     // do not subtract ex_c because exceptions will be included just only bprim bits
     // base_arr_size is number of ints
-    base_arr_size = (int)ceil(((Delta::bcount) * bprim)/(8*sizeof(int)));
+    double dbas = ((double)Delta::bcount*bprim)/(double)(8*sizeof(int));
+    base_arr_size = ceil(dbas);
     *cc = base_arr_size*sizeof(int);
     *comp_arr = (int*)malloc(base_arr_size*sizeof(int));
 

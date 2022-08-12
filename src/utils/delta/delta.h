@@ -33,10 +33,15 @@ public:
 
     int * delta_starts;
     int * delta_ends;
+
+    // holds the compressed bitpacked b' values
     int * comp_delta_starts;
     int * comp_delta_ends;
+    // holds the location o f
     int * meta_delta_starts;
     int * meta_delta_ends;
+    int * excep_delta_starts;
+    int * excep_delta_ends;
     
     // TODO make these private
     unsigned int bprim_starts;

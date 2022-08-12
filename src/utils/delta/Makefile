@@ -1,6 +1,7 @@
 OBJ_DIR = ../../../obj/
 BIN_DIR = ../../../bin/
 UTILITIES_DIR = ../../utils/
+#LDFLAGS:="${LDFLAGS} -mavx512vl"
 # -------------------
 # define our includes
 # -------------------
@@ -23,7 +24,7 @@ BUILT_OBJECTS= $(patsubst %,$(OBJ_DIR)/%,$(OBJECTS))
 
 $(BUILT_OBJECTS): $(SOURCES)
 	@echo "  * compiling" $(*F).cpp
-	@$(CXX) -g -c -o $@ $(*F).cpp $(LDFLAGS) $(CXXFLAGS) $(INCLUDES) 
+	@$(CXX) -mavx512vl -g -c -o $@ $(*F).cpp $(LDFLAGS) $(CXXFLAGS) $(INCLUDES) 
 
 $(EXT_OBJECTS):
 	@$(MAKE) --no-print-directory -C -W $(INCLUDES)
