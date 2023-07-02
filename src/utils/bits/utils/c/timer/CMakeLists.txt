@@ -1,0 +1,1 @@
+add_library(timer SHARED timer.c timer.h)

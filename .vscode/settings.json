@@ -6,7 +6,8 @@
         "string_view": "cpp",
         "initializer_list": "cpp",
         "valarray": "cpp",
-        "cmath": "cpp"
+        "cmath": "cpp",
+        "timer.h": "c"
     },
 
     "C_Cpp.default.browse.path": [

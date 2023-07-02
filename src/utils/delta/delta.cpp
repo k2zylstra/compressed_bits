@@ -1,3 +1,12 @@
+/* Delta Object
+*   This takes in a set list of sorted intervals and will:
+*   - compute the lengths
+*   - calculate the deltas for the starts
+*   - calculate the deltas for the ends
+*   - return in the deltas in place
+*/
+
+
 #include "delta.h"
 #include <vector>
 #include <iostream>
@@ -189,7 +198,7 @@ int Delta::compute_deltas_d4(unsigned int * Bstarts, unsigned int * Bends, unsig
 
     // i = 4 to store the first 4 options
     for (i = 0; i <= B_length-8; i+=4) {
-        // TODO what if B_length is not deivisible by 8 and therefore tries to acces outside of this
+        // TODO what if B_length is not deivisible by 8floai and therefore tries to acces outside of this
         // sets the ymm registers and subtracts the values to be stored in the result ymm register
         y1.r4 = _mm_setr_epi32(Bstarts[i], Bstarts[i+1], Bstarts[i+2], Bstarts[i+3]);
         y2.r4 = _mm_setr_epi32(Bstarts[i+4], Bstarts[i+5], Bstarts[i+6], Bstarts[i+7]);

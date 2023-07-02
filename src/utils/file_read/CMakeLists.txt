@@ -1,0 +1,15 @@
+add_library(file_read SHARED file_read.cpp file_read.h)
+
+target_link_libraries(file_read genomeFile)
+target_link_libraries(file_read interval)
+target_link_libraries(file_read timer)
+target_link_libraries(file_read mt)
+target_link_libraries(file_read bsearch)
+target_link_libraries(file_read bedFile)
+
+target_include_directories(file_read PUBLIC ../bedFile)
+target_include_directories(file_read PUBLIC ../genomeFile)
+target_include_directories(file_read PUBLIC ../interval)
+target_include_directories(file_read PUBLIC ../bits/utils/c/timer)
+target_include_directories(file_read PUBLIC ../bits/utils/c/mt)
+target_include_directories(file_read PUBLIC ../bsearch)

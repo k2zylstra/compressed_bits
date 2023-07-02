@@ -14,6 +14,10 @@ Licenced under the GNU General Public License 2.0 license.
 #ifndef __INTERVAL_H__
 #define __INTERVAL_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 struct interval {
 	// order is hack to maintin the position of the interval in the orginal
 	// data file
@@ -127,4 +131,7 @@ void one_side_simple_permute(unsigned int mask,
 							 unsigned int *B_lens,
 							 unsigned int size_B);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

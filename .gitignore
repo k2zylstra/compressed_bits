@@ -1,3 +1,5 @@
-.vscode/*
-bin/*
-obj/*
+.vscode
+bin
+obj
+CMakeFiles
+log.txt

@@ -14,6 +14,10 @@ Licenced under the GNU General Public License 2.0 license.
 #ifndef __TIMER_H__
 #define __TIMER_H__
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void start();
 
 void stop();
@@ -24,4 +28,7 @@ struct timeval in();
 
 unsigned long out(struct timeval i);
 
+#ifdef __cplusplus
+}
+#endif
 #endif

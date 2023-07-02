@@ -1,0 +1,1 @@
+add_library(lineFileUtilities SHARED lineFileUtilities.cpp lineFileUtilities.h)

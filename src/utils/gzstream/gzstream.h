@@ -38,6 +38,10 @@
 namespace GZSTREAM_NAMESPACE {
 #endif
 
+// #ifdef __cplusplus
+// extern "C" {
+// #endif
+
 // ----------------------------------------------------------------------------
 // Internal classes to implement gzstream. See below for user classes.
 // ----------------------------------------------------------------------------
@@ -110,6 +114,10 @@ public:
         gzstreambase::open( name, open_mode);
     }
 };
+
+// #ifdef __cplusplus
+// }
+// #endif
 
 #ifdef GZSTREAM_NAMESPACE
 } // namespace GZSTREAM_NAMESPACE

@@ -1,0 +1,1 @@
+add_library(delta SHARED delta.cpp delta.h)

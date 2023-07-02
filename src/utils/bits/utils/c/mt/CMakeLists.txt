@@ -1,0 +1,1 @@
+add_library(mt SHARED mt_test.c mt.c mt.h)

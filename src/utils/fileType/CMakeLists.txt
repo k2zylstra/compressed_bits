@@ -1,0 +1,1 @@
+add_library(fileType SHARED fileType.cpp fileType.h)

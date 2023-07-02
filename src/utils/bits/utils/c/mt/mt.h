@@ -1,5 +1,9 @@
 #ifndef __MT_H__
 #define __MT_H__
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 /* 
    A C-program for MT19937, with initialization improved 2002/1/26.
    Coded by Takuji Nishimura and Makoto Matsumoto.
@@ -89,4 +93,7 @@ unsigned long genrand_int32_omp( unsigned long *mt_r,
 void init_genrand_omp( unsigned long s,
 					   unsigned long *mt_r,
 					   int *mti_r );
+#ifdef __cplusplus
+}
+#endif
 #endif
