@@ -1,5 +1,8 @@
-.vscode
+.*
+!.gitignore
 bin
+build
 obj
 CMakeFiles
 log.txt
+.gdbhistory
