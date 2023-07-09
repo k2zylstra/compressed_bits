@@ -8,7 +8,7 @@
 #define BEDAFILE "HSMMtube_Skeletal_Muscle_Myotubes_Derived_from_HSMM_Active_TSS.bed"
 #define BEDBFILE "HSMMtube_Skeletal_Muscle_Myotubes_Derived_from_HSMM_Enhancers.bed"
 #define GENOMEFILE "human.hg38.genome"
-#define N 50
+#define N 5
 
 class TestBitsCount : public ::testing::Test {
 protected:

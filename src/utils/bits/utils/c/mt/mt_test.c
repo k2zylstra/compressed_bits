@@ -3,6 +3,7 @@
 #include <sys/time.h>
 #include "mt.h"
 
+struct timeval t;
 
 int main(void)
 {
@@ -25,12 +26,13 @@ int main(void)
 		//(unsigned) time(NULL)/2
 		//}, length=4;
     //init_by_array(init, length);
-	init_genrand((unsigned) gettimeofday(NULL, NULL));
-    printf("1000 outputs of genrand_int32()\n");
-    for (i=0; i<1000; i++) {
-      printf("%10lu ", genrand_int32());
-      if (i%5==4) printf("\n");
-    }
+  gettimeofday(&t, 0);
+	init_genrand((unsigned) t.tv_sec);
+  printf("1000 outputs of genrand_int32()\n");
+  for (i=0; i<1000; i++) {
+    printf("%10lu ", genrand_int32());
+    if (i%5==4) printf("\n");
+  }
 
 	/*
     printf("\n1000 outputs of genrand_real2()\n");

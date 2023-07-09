@@ -8,6 +8,19 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 enable_testing()
+include(GoogleTest)
+
+add_executable(test_s4fastpfor test_s4fastpfor.cpp)
+target_link_libraries(test_s4fastpfor
+    s4-fastpfor
+    mt
+    GTest::gtest_main
+    GTest::gmock_main
+)
+target_include_directories(test_s4fastpfor PUBLIC
+    ../../utils/MSIMD/s4-fastpfor
+    ../../utils/bits/utils/c/mt
+)
 
 add_executable(test_bits_count test_bits_count.cpp)
 target_link_libraries(test_bits_count
@@ -23,9 +36,10 @@ target_include_directories(test_bits_count PUBLIC
     ../../utils/bedFile
     ../../utils/genomeFile
     ../../utils/lineFileUtilities
-    ../../utils/file_read)
-include(GoogleTest)
+    ../../utils/file_read
+)
 gtest_discover_tests(test_bits_count)
+gtest_discover_tests(test_s4fastpfor)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../data/HSMMtube_Skeletal_Muscle_Myotubes_Derived_from_HSMM_Active_TSS.bed
      DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

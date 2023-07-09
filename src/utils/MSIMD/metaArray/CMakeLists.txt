@@ -1,0 +1,1 @@
+add_library(metaArray MetaArray.h MetaArray.cpp)
