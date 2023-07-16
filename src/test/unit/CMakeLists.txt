@@ -13,13 +13,16 @@ include(GoogleTest)
 add_executable(test_s4fastpfor test_s4fastpfor.cpp)
 target_link_libraries(test_s4fastpfor
     s4-fastpfor
+    # for whatever reason, linking this library messes with the google test entrypoints
     mt
+    timer
     GTest::gtest_main
     GTest::gmock_main
 )
 target_include_directories(test_s4fastpfor PUBLIC
     ../../utils/MSIMD/s4-fastpfor
     ../../utils/bits/utils/c/mt
+    ../../utils/bits/utils/c/timer
 )
 
 add_executable(test_bits_count test_bits_count.cpp)
@@ -38,6 +41,17 @@ target_include_directories(test_bits_count PUBLIC
     ../../utils/lineFileUtilities
     ../../utils/file_read
 )
+
+add_executable(test_metaarray test_metaarray.cpp)
+target_link_libraries(test_metaarray PUBLIC
+    metaArray
+    GTest::gtest_main
+)
+target_include_directories(test_metaarray PUBLIC
+    ../../utils/MSIMD/metaArray/
+)
+
+gtest_discover_tests(test_metaarray)
 gtest_discover_tests(test_bits_count)
 gtest_discover_tests(test_s4fastpfor)
 

@@ -1,5 +1,0 @@
-break s4-fastpfor.cpp:30
-break s4-fastpfor.cpp:37
-break s4-fastpfor.cpp:60
-
-set exec-wrapper logging enabled
