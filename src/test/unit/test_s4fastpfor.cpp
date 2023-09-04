@@ -107,4 +107,5 @@ TEST_F(TestCompression, test_time_taken) {
     ASSERT_LT(max_time, time_taken);
 
     std::cout << "time taken in microseconds for ten million number and a bprim of 5: " << time_taken << std::endl;
+    free(out_array);
 }

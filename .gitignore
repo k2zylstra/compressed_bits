@@ -6,3 +6,7 @@ obj
 CMakeFiles
 log.txt
 .gdbhistory
+Testing
+
+**peda-session*.txt
+**.gdb_history

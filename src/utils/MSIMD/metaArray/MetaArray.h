@@ -2,32 +2,66 @@
 #define METAARRAY
 
 #include <stdint.h>
+#include <vector>
 
 // TODO consolidate these ussages
 #define REGISTER_SIZE 32
 #define uintN_t uint32_t
 
-const uint8_t debruijan_values_32[32] = {
-     0,  9,  1, 10, 13, 21,  2, 29,
-    11, 14, 16, 18, 22, 25,  3, 30,
-     8, 12, 20, 28, 15, 17, 24,  7,
-    19, 27, 23,  6, 26,  5,  4, 31
+struct ma {
+    uint8_t bprim;
+    uint8_t exception_count;
+    uint8_t * meta_array;
 };
 
+struct array_bitsize {
+    // base array
+    uintN_t * arr;
+
+    // this is for the end of the array according to the size of uintN_t
+    uintN_t end_register = 0;
+
+    // this is for any additional bits that have been used in the array past the end
+    uintN_t bits_addon = 0;
+    uintN_t size = 0;
+};
+
+// IMPORTANT: barr_block that is passed in needs to be sorted
 class MetaArray {
 public:
-    MetaArray(uintN_t * barr);
+    
+    // barr is the original array (in our case the delta encoded one) that will be compressed
+    MetaArray(uintN_t * barr_block, unsigned int barr_block_size);
+    ~MetaArray();
     int get_exception_size(); // in bytes
     int get_meta_size(); // in bytes
     int get_n_exception(int block_n, int index);
 
+    // int exceptionblocks_end[REGISTER_SIZE];
+    // TODO put in private and change tests accordingliny
+    struct array_bitsize exceptionblocks[REGISTER_SIZE+1];
 private:
     int generate_blocks();
-    int calculate_bits_used_debruijan_32(uintN_t number);
-    int calculate_bits_used_log(uintN_t number);
-    int calculate_bits_used_shift(uintN_t number, int bprim);
-    uintN_t * metablock;
-    uintN_t (* exceptionblocks)[32];
+    int generate_metadata(); 
+    int find_exceptions(uintN_t * barr_block, unsigned int barr_block_size); // records the size and number of exceptions
+    int store_exception_counts(uintN_t * barr_block);
+    int count_exceptions(int bprim); // will count the exceptions store in the exceptions count array
+    int calculate_bprim(uintN_t * barr_block);
+    int allocate_exception_blocks();
+    int store_exception(uintN_t value);
+
+    struct ma meta_array;
+
+    // index represents the bit length and the value is the number of times that length occured
+    int exception_counts[REGISTER_SIZE + 1];
+    
+    // I don't need exception staging because I have already counted the number of exceptions in the
+    //  exceptions count array. I can use that to generate the needed place and put everything into
+    //  its final area in the find_exceptions method
+    // uintN_t exceptions_size; // size in bytes
+    // uintN_t * exceptionblocks[REGISTER_SIZE];
+
+    // this would have to change if the block size ever goes above 256
 };
 
 #endif

@@ -1,4 +1,0 @@
-break main
-break test_deltas.cpp:165
-
-set exec-wrapper logging enabled
