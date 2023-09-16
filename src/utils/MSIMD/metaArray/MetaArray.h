@@ -7,6 +7,7 @@
 // TODO consolidate these ussages
 #define REGISTER_SIZE 32
 #define uintN_t uint32_t
+#define BYTESIZE 8
 
 struct ma {
     uint8_t bprim;
@@ -43,7 +44,7 @@ public:
 private:
     int generate_blocks();
     int generate_metadata(); 
-    int find_exceptions(uintN_t * barr_block, unsigned int barr_block_size); // records the size and number of exceptions
+    int find_exceptions(const uintN_t * barr_block, unsigned int barr_block_size); // records the size and number of exceptions
     int store_exception_counts(uintN_t * barr_block);
     int count_exceptions(int bprim); // will count the exceptions store in the exceptions count array
     int calculate_bprim(uintN_t * barr_block);

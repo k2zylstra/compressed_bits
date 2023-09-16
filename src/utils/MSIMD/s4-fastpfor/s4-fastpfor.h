@@ -3,8 +3,18 @@
 
 #define BLOCKSIZE 256
 
+#define POW2TO0 1
+#define POW2TO1 2
+#define POW2TO2 4
+#define POW2TO3 8
+#define POW2TO4 16
+#define DEBRUIJNSEQUENCE32 0x07C4ACDD
+#define DEBRUIJNISOLATE32 27
+#define BYTESIZE 8
+
 // TODO consolidate these ussages
-#define REGISTER_SIZE 32
+#define REGISTER_SIZE_BITS 32
+#define REGISTER_SIZE_BYTES (int) REGISTER_SIZE_BITS/BYTESIZE
 #define uintN_t uint32_t
 
 
@@ -21,7 +31,7 @@ int calculate_bits_used_debruijan_32(uint32_t number);
 int calculate_bits_used_log(uint32_t number);
 int calculate_bits_used_shift(uint32_t number);
 
-int calculate_compressed_size(int bprim);
+unsigned int calculate_compressed_size(int bprim);
 
 // // allocates the space needed for the storage of the compressed blocks
 // int allocate_block_space(unsigned int * B_arr
@@ -42,10 +52,10 @@ int allocate_block_space(uint32_t count, uint32_t bprim, uint32_t * block_p);
 // mc: meta count
 // cc: compressed array count in bytes
 // ec: exceptions count
-int s4_fastpfor(unsigned int  * delta_arr
-                ,unsigned int * comp_arr
-                ,unsigned int cc
-                ,unsigned int delta_c
-                ,unsigned int bprim);
+int s4_fastpfor(const uint32_t * in_arr
+                ,uint32_t * comp_arr
+                ,uint32_t  compressed_array_count
+                ,uint32_t in_count
+                ,int bprim);
 
 #endif
